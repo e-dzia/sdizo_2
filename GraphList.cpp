@@ -65,25 +65,19 @@ void GraphList::createRandom(int vertexes, int density) {
     int startVertex;
     int endVertex;
     int length;
-    bool twoWay;
     bool again;
     for (int i = 0; i < edges; i++){
         do {
             again = true;
-            startVertex = rand()%vertexes;
+            startVertex = i%vertexes;
             endVertex = rand()%vertexes;
             length = rand()%10+1;
-            //twoWay = rand()%2;
 
             if (startVertex != endVertex){
                 if (list[startVertex].findElement(endVertex) == -1){ //jesli jeszcze nie jest sasiadem z danym wierzcholkiem
                     list[startVertex].addElement(endVertex,length);
                     again = false;
                 }
-               /* if(twoWay && list[endVertex].findElement(startVertex) == -1){
-                    list[endVertex].addElement(startVertex,rand()%10+1);
-                    again = false;
-                }*/
             }
         }while (again);
     }

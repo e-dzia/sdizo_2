@@ -118,24 +118,18 @@ void GraphMatrix::createRandom(int vertexes, int density) {
     int startVertex;
     int endVertex;
     int length;
-   // bool twoWay;
     bool again;
     for (int i = 0; i < edges; i++){
         do {
             again = true;
-            startVertex = rand()%vertexes;
+            startVertex = i%vertexes;
             endVertex = rand()%vertexes;
             length = rand()%10+1;
-            //twoWay = rand()%2;
             if (startVertex != endVertex){
                 if (matrix[startVertex][endVertex] == 0){
                     matrix[startVertex][endVertex] = length;
                     again = false;
                 }
-
-                /*if(twoWay)
-                    matrix[endVertex][startVertex] = rand()%10+1;
-                */
             }
 
         }while (again);
