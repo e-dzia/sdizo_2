@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <chrono>
 #include "MinimumSpanningTree.h"
 #include "GraphList.h"
 #include "GraphMatrix.h"
@@ -175,7 +176,7 @@ std::string MinimumSpanningTree::algorithm2(int start, int end) { //Kruskal
     return result;
 }
 
-void MinimumSpanningTree::menu() {
+/*void MinimumSpanningTree::menu() {
     //g = new GraphList();
     //gm = new GraphMatrix();
 
@@ -204,9 +205,11 @@ void MinimumSpanningTree::menu() {
             break;
     }
     this->menu();
-}
+}*/
 
-void MinimumSpanningTree::menuFunctions() {
+void MinimumSpanningTree::menu(Graph *gl, Graph *gm) {
+    std::chrono::nanoseconds time_start;
+    std::chrono::nanoseconds time_end;
     std::cout << "MENU - Minimalne Drzewo Rozpinajace\n"
             "1. Wczytaj z pliku.\n"
             "2. Generuj losowo.\n"
@@ -219,7 +222,8 @@ void MinimumSpanningTree::menuFunctions() {
     std::cin >> chosen;
     switch(chosen){
         case 1:
-            g->loadFromFile("data.txt");
+            gl->loadFromFile("data.txt");
+            gm->loadFromFile("data.txt");
             break;
         case 2:
             cout << "Prosze podac liczbe wierzcholkow.\n";
@@ -227,18 +231,53 @@ void MinimumSpanningTree::menuFunctions() {
             cin >> v;
             cout << "Prosze podac gestosc w procentach.\n";
             cin >> chosen;
-            g->createRandom(v, chosen);
+            gl->createRandom(v, chosen);
+            gm->createRandom(v, chosen);
             break;
         case 3:
-            cout << *g;
+            g = gl;
+            cout << "Reprezentacja listowa:\n" << *g << endl;
+            g = gm;
+            cout << "Reprezentacja macierzowa:\n" << *g << endl;
+            g = NULL;
             break;
         case 4:
-            std::cout << this->algorithm1(0, 0) << endl;
+            g = gl;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja listowa:\n" << this->algorithm1(0, 0);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = gm;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja macierzowa:\n" << this->algorithm1(0, 0);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = NULL;
             break;
         case 5:
-            std::cout << this->algorithm2(0, 0) << endl;
+            g = gl;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja listowa:\n" << this->algorithm2(0, 0);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = gm;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja macierzowa:\n" << this->algorithm2(0, 0);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = NULL;
             break;
         case 6:
+            delete gl;
+            delete gm;
             return;
         default:
             cout << "Prosze podac poprawna liczbe.\n";
@@ -246,7 +285,7 @@ void MinimumSpanningTree::menuFunctions() {
             cin.sync();
             break;
     }
-    this->menuFunctions();
+    this->menu(gl, gm);
 }
 
 MinimumSpanningTree::~MinimumSpanningTree() {

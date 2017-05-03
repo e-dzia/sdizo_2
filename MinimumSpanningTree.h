@@ -18,7 +18,7 @@ public:
     std::string algorithm1(int start, int end); //Prim
     std::string algorithm2(int start, int end); //Kruskal
 
-    void menu();
+    void menu(Graph *gl, Graph *gm);
 
     void menuFunctions();
 };

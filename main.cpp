@@ -16,10 +16,10 @@ int main() {
     int density = 25;
     createFile(n,density);
 
-    Problem *p;
+    Problem *p = NULL;
     mainManu(p);
 
-    delete p;
+    if (p!=NULL) delete p;
     return 0;
 }
 
@@ -61,19 +61,26 @@ void mainManu(Problem *p) {
     int chosen;
     std::cin >> chosen;
     switch(chosen){
-        case 1:
+        case 1:{
+            Graph *gl = new GraphList();
+            Graph *gm = new GraphMatrix();
             p = new MinimumSpanningTree();
-            p->menu();
+            p->menu(gl, gm);
+        }
             break;
-        case 2:
+        case 2: {
+            Graph *gl = new GraphList();
+            Graph *gm = new GraphMatrix();
             p = new ShortestPath();
-            p->menu();
+            p->menu(gl, gm);
+        }
             break;
         case 3:
             //p = new MaximumFlow();
            // p->menu();
             break;
         case 4:
+            if (p!=NULL) delete p;
             exit(0);
             break;
         default:

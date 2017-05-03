@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <chrono>
 #include "ShortestPath.h"
 #include "GraphList.h"
 #include "GraphMatrix.h"
@@ -148,7 +149,7 @@ std::string ShortestPath::algorithm2(int start, int end) { //Ford-Bellman
     return result;
 }
 
-void ShortestPath::menu() {
+/*void ShortestPath::menu() {
     std::cout << "MENU - Minimalne Drzewo Rozpinajace\n"
             "1. Reprezetacja listowa.\n"
             "2. Reprezentacja macierzowa.\n"
@@ -174,9 +175,11 @@ void ShortestPath::menu() {
             break;
     }
     this->menu();
-}
+}*/
 
-void ShortestPath::menuFunctions() {
+void ShortestPath::menu(Graph *gl, Graph *gm) {
+    std::chrono::nanoseconds time_start;
+    std::chrono::nanoseconds time_end;
     std::cout << "MENU - Minimalne Drzewo Rozpinajace\n"
             "1. Wczytaj z pliku.\n"
             "2. Generuj losowo.\n"
@@ -189,7 +192,8 @@ void ShortestPath::menuFunctions() {
     std::cin >> chosen;
     switch(chosen){
         case 1:
-            g->loadFromFile("data.txt");
+            gl->loadFromFile("data.txt");
+            gm->loadFromFile("data.txt");
             break;
         case 2:
             cout << "Prosze podac liczbe wierzcholkow.\n";
@@ -197,10 +201,15 @@ void ShortestPath::menuFunctions() {
             cin >> v;
             cout << "Prosze podac gestosc w procentach.\n";
             cin >> chosen;
-            g->createRandom(v, chosen);
+            gl->createRandom(v, chosen);
+            gm->createRandom(v, chosen);
             break;
         case 3:
-            cout << *g;
+            g = gl;
+            cout << "Reprezentacja listowa:\n" << *g << endl;
+            g = gm;
+            cout << "Reprezentacja macierzowa:\n" << *g << endl;
+            g = NULL;
             break;
         case 4:{
             cout << "Prosze podac wierzcholek poczatkowy.\n";
@@ -209,7 +218,21 @@ void ShortestPath::menuFunctions() {
             cout << "Prosze podac wierzcholek koncowy.\n";
             int end;
             cin >> end;
-            std::cout << this->algorithm1(start, end) << endl;
+            g = gl;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja listowa:\n" << this->algorithm1(start, end);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = gm;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja macierzowa:\n" << this->algorithm1(start, end);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = NULL;
             break;
         }
         case 5: {
@@ -219,7 +242,21 @@ void ShortestPath::menuFunctions() {
             cout << "Prosze podac wierzcholek koncowy.\n";
             int end;
             cin >> end;
-            std::cout << this->algorithm2(start, end) << endl;
+            g = gl;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja listowa:\n" << this->algorithm2(start, end);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = gm;
+            time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            std::cout << "\n########################################\nReprezentacja macierzowa:\n" << this->algorithm2(start, end);
+            time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch());
+            cout << "Czas: " << (time_end - time_start) / std::chrono::nanoseconds(1) << " nanosekund.\n";
+            g = NULL;
             break;
         }
         case 6:
@@ -230,7 +267,7 @@ void ShortestPath::menuFunctions() {
             cin.sync();
             break;
     }
-    this->menuFunctions();
+    this->menu(gl, gm);
 }
 
 ShortestPath::~ShortestPath() {

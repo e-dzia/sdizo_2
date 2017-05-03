@@ -18,9 +18,7 @@ public:
 
     virtual std::string algorithm2(int start, int end)= 0;
 
-    virtual void menu()= 0;
-
-    virtual void menuFunctions()= 0;
+    virtual void menu(Graph *gl, Graph *gm)= 0;
 
     void test();
 

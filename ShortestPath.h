@@ -19,9 +19,8 @@ public:
 
     std::string algorithm2(int start, int end) override; //Ford-Bellman
 
-    void menu() override;
+    void menu(Graph *gl, Graph *gm) override;
 
-    void menuFunctions() override;
 
 };
 
