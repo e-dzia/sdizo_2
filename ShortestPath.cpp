@@ -202,18 +202,26 @@ void ShortestPath::menuFunctions() {
         case 3:
             cout << *g;
             break;
-        case 4:
+        case 4:{
             cout << "Prosze podac wierzcholek poczatkowy.\n";
             int start;
             cin >> start;
             cout << "Prosze podac wierzcholek koncowy.\n";
             int end;
             cin >> end;
-            this->algorithm1(start, end);
+            std::cout << this->algorithm1(start, end) << endl;
             break;
-        case 5:
-            this->algorithm2(0, 0);
+        }
+        case 5: {
+            cout << "Prosze podac wierzcholek poczatkowy.\n";
+            int start;
+            cin >> start;
+            cout << "Prosze podac wierzcholek koncowy.\n";
+            int end;
+            cin >> end;
+            std::cout << this->algorithm2(start, end) << endl;
             break;
+        }
         case 6:
             return;
         default:

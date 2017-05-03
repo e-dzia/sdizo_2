@@ -12,8 +12,14 @@ void test();
 
 int main() {
     srand(time(NULL));
+    int n = 10;
+    int density = 25;
+    createFile(n,density);
 
-    test();
+    Problem *p;
+    mainManu(p);
+
+    delete p;
     return 0;
 }
 
@@ -49,7 +55,7 @@ void mainManu(Problem *p) {
     std::cout << "MENU\n"
             "1. Minimalne Drzewo Rozpinajace.\n"
             "2. Najkrotsza sciezka w grafie.\n"
-            "3. Maksymalny przeplyw.\n"
+            "3. Maksymalny przeplyw. (nie ma)\n"
             "4. Wyjdz z programu.\n"
             "Prosze wpisac odpowiednia liczbe.";
     int chosen;

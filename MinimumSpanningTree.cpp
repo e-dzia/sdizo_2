@@ -233,10 +233,10 @@ void MinimumSpanningTree::menuFunctions() {
             cout << *g;
             break;
         case 4:
-            this->algorithm1(0, 0);
+            std::cout << this->algorithm1(0, 0) << endl;
             break;
         case 5:
-            this->algorithm2(0, 0);
+            std::cout << this->algorithm2(0, 0) << endl;
             break;
         case 6:
             return;
