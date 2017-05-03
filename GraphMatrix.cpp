@@ -142,17 +142,6 @@ void GraphMatrix::createRandom(int vertexes, int density) {
     }
 }
 
-int GraphMatrix::countDifferentEdges() {
-    int sum = 0;
-    for (int i = 0; i < vertexes; i++){
-        for (int j = 0; j < i; j++){
-            if (matrix[i][j] != 0 || matrix[j][i] !=0)
-                sum++;
-        }
-    }
-    return sum;
-}
-
 int **GraphMatrix::toSortedArray() {
     int **result = new int*[edges];
     for (int i = 0; i < edges; i++){

@@ -89,17 +89,6 @@ void GraphList::createRandom(int vertexes, int density) {
     }
 }
 
-int GraphList::countDifferentEdges() {
-    //TODO: policz rozne krawedzie w liscie
-    int sum = 0;
-    for (int i = 0; i < vertexes; i++){
-        //sum += list[i].getSize();
-    }
-    //edges = sum;
-
-    return 0;
-}
-
 int** GraphList::toSortedArray() {
     int **result = new int*[edges];
     for (int i = 0; i < edges; i++){

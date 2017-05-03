@@ -14,7 +14,7 @@ private:
 
     void countEdges() override;
     void createMatrix(int size);
-    int countDifferentEdges() override;
+
 public:
     GraphMatrix();
     //GraphMatrix(int size);

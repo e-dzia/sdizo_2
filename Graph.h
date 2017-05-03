@@ -16,7 +16,7 @@ protected:
 
     virtual void countDensity();
     virtual void countEdges() = 0;
-    virtual int countDifferentEdges() = 0;
+
 public:
     virtual ~Graph();
 

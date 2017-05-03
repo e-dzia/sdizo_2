@@ -15,7 +15,7 @@ private:
     List2 *list;
     void countEdges() override;
     void createList(int size);
-    int countDifferentEdges() override;
+
 public:
     GraphList();
     ~GraphList();
