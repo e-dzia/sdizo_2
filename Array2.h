@@ -10,13 +10,13 @@
 
 using namespace std;
 
-class Array{
+class Array2{
 private:
     int size;
     int * array;
 public:
-    Array(); //konstruktor domyślny
-    ~Array(); //destruktor
+    Array2(); //konstruktor domyślny
+    ~Array2(); //destruktor
 
     int getSize()const;
 
@@ -25,7 +25,10 @@ public:
     void deleteElement(int position); //podana pozycja elementu do usuniecia
     int findElement(int value);
 
-    friend ostream & operator<<(ostream & os , const Array & a);
+    friend ostream & operator<<(ostream & os , const Array2 & a);
+
+    void merge(Array2 *a);
+    void sort();
 
     int & operator[](int n);
     int & operator[](int n) const;
@@ -34,7 +37,7 @@ public:
 
     void print(std::ostream &str) const ;
 
-    bool deleteAll();
+   // bool deleteAll();
 
     int getElement(int position);
 };

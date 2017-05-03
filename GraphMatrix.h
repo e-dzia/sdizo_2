@@ -11,17 +11,28 @@
 class GraphMatrix: public Graph{
 private:
     int **matrix;
+
+    void countEdges() override;
+    void createMatrix(int size);
+    int countDifferentEdges() override;
 public:
     GraphMatrix();
-    GraphMatrix(int size);
+    //GraphMatrix(int size);
     ~GraphMatrix();
 
     void loadFromFile(std::string filename) override;
     void print(std::ostream &str) const override;
 
-    void createMatrix(int size);
+    void makeBothWays() override;
 
-    void countEdges() override;
+    void createRandom(int vertexes, int density) override;
+
+    int **toSortedArray() override;
+
+    Array2 * getNeighbours(int index) override;
+
+    Array2 * toArray() override;
+
 
 };
 

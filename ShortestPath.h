@@ -6,7 +6,22 @@
 #define SDIZO_2_SHORTESTPATH_H
 
 
-class ShortestPath {
+#include "Problem.h"
+#include "Graph.h"
+
+class ShortestPath: public Problem {
+private:
+
+public:
+    ~ShortestPath();
+
+    string algorithm1(int start, int end) override; //Dijkstra
+
+    std::string algorithm2(int start, int end) override; //Ford-Bellman
+
+    void menu() override;
+
+    void menuFunctions() override;
 
 };
 

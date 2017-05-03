@@ -2,6 +2,7 @@
 // Created by Edzia on 2017-04-29.
 //
 #include <iostream>
+#include "Array2.h"
 
 #ifndef SDIZO_2_GRAPH_H
 #define SDIZO_2_GRAPH_H
@@ -13,17 +14,24 @@ protected:
     int edges; //liczba krawedzi
     int density; //gestosc
 
+    virtual void countDensity();
+    virtual void countEdges() = 0;
+    virtual int countDifferentEdges() = 0;
 public:
     virtual ~Graph();
 
     int getDensity();
-    int getVertexes() const;
-    int getEdges() const;
+    int getNumberOfVertexes() const;
+    int getNumberOfEdges() const;
 
-    virtual void countDensity();
-    virtual void countEdges() = 0;
+
+    virtual void createRandom(int vertexes, int density) = 0;
     virtual void loadFromFile(std::string filename) = 0;
     virtual void print(std::ostream& str)const = 0;
+    virtual int** toSortedArray() = 0;
+    virtual Array2 * toArray() = 0;
+    virtual Array2 * getNeighbours(int index) = 0;
+    virtual void makeBothWays() = 0;
 
     friend std::ostream& operator<<(std::ostream& str, Graph const& g){
         g.print(str);

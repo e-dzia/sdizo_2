@@ -2,14 +2,14 @@
 // Created by Edzia on 2017-03-06.
 //
 
-#include "List.h"
+#include "List2.h"
 
-List::List() {
+List2::List2() {
     this->head = NULL;
     size = 0;
 }
 
-List::~List() {
+List2::~List2() {
     ElemList * p = this->head;
     ElemList * next;
     while (p != NULL){
@@ -22,7 +22,7 @@ List::~List() {
     delete p;
 }
 
-void List::loadFile(string name) {
+void List2::loadFile(string name) {
     ifstream fin;
     fin.open(name.c_str(), ios::in);
     if (fin.is_open()){
@@ -37,57 +37,35 @@ void List::loadFile(string name) {
     }
 }
 
-void List::addElement(int afterValue, int value) {
-    int position = this->findElement(afterValue);
-    if (position == -1) position = 0;
+void List2::addElement(int neighbour, int length) {
+    int position = 0;
     ElemList * newElemList = new ElemList();
-    newElemList->length = value;
-    if (position == 0){ //poczatek tabeli
-        if (head != NULL) {
-            newElemList->next = this->head;
-            this->head->prev = newElemList;
-        }
-        newElemList->prev = NULL;
-        this->head = newElemList;
+    newElemList->length = length;
+    newElemList->neighbour = neighbour;
+    if (head != NULL) {
+        newElemList->next = this->head;
+        this->head->prev = newElemList;
     }
-    else if (position >= this->getSize()-1){ //koniec tabeli
-        ElemList * p = this->head;
-        while (p->next != NULL){
-            p = p->next;
-        }
-        newElemList->next = NULL;
-        p->next = newElemList;
-        newElemList->prev = p;
-    }
-    else {//inne miejsce tabeli
-        int i = 0;
-        ElemList * p = this->head;
-        while (p != NULL && i < position){
-            p = p->next;
-            i++;
-        }
-        newElemList->next = p->next;
-        p->next->prev = newElemList;
-        p->next = newElemList;
-        newElemList->prev = p;
-    }
+    newElemList->prev = NULL;
+    this->head = newElemList;
+
     size++;
 }
 
-ostream &operator<<(ostream &os, const List &a) {
+ostream &operator<<(ostream &os, const List2 &a) {
     ElemList * p = a.head;
     while (p != NULL){
-        os << p->length << " ";
+        os << p->neighbour << ":" << p->length << " ";
         p = p->next;
     }
     return os;
 }
 
-int List::getSize() const{
+int List2::getSize() const{
     return this->size;
 }
 
-void List::deleteElement(int value) {
+void List2::deleteElement(int value) {
     int position = this->findElement(value);
     if (position == -1) return;
     else if (position == 0){ //poczatek tabeli
@@ -120,11 +98,11 @@ void List::deleteElement(int value) {
     size--;
 }
 
-int List::findElement(int value) {
+int List2::findElement(int value) {
     int position = 0;
     ElemList * p = this->head;
     while (p != NULL){
-        if (p->length == value) {
+        if (p->neighbour == value) {
             return position;
         }
         p = p->next;
@@ -133,7 +111,7 @@ int List::findElement(int value) {
     return -1;
 }
 
-void List::menu() {
+void List2::menu() {
     cout << "MENU - lista\n"
             "1. Zbuduj z pliku.\n"
             "2. Usun.\n"
@@ -183,11 +161,11 @@ void List::menu() {
     this->menu();
 }
 
-void List::print(std::ostream &str) const {
+void List2::print(std::ostream &str) const {
     str << *this;
 }
 
-int List::getElement(int position) {
+int List2::getElement(int position) {
     ElemList * p = this->head;
     for (int i = 0; i < position && p != NULL; i++){
         p = p->next;
@@ -195,6 +173,14 @@ int List::getElement(int position) {
     return p->length;
 }
 
-ElemList *List::getHead() const {
+ElemList* List2::getPointerElement(int position){
+    ElemList * p = this->head;
+    for (int i = 0; i < position && p != NULL; i++){
+        p = p->next;
+    }
+    return p;
+}
+
+ElemList *List2::getHead() const {
     return head;
 }

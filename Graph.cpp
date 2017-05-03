@@ -11,7 +11,7 @@ int Graph::getDensity() {
 
 void Graph::countDensity() {
     if (vertexes != 0)
-        density = edges/vertexes*100;
+        density = 100*edges/((vertexes*vertexes - vertexes));
     else density = 0;
 }
 
@@ -21,10 +21,10 @@ Graph::~Graph() {
     density = 0;
 }
 
-int Graph::getVertexes() const {
+int Graph::getNumberOfVertexes() const {
     return vertexes;
 }
 
-int Graph::getEdges() const {
+int Graph::getNumberOfEdges() const {
     return edges;
 }

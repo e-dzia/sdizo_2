@@ -9,9 +9,10 @@ GraphMatrix::GraphMatrix() {
     vertexes = 0;
     edges = 0;
     density = 0;
+    matrix = NULL;
 }
 
-GraphMatrix::GraphMatrix(int size) {
+/*GraphMatrix::GraphMatrix(int size) {
     matrix = new int *[size];
     for (int i = 0; i < size; i++){
         matrix[i] = new int[size];
@@ -24,13 +25,15 @@ GraphMatrix::GraphMatrix(int size) {
                 matrix[i][j] = rand()%10;
         }
     }
-}
+}*/
 
 GraphMatrix::~GraphMatrix() {
-    for (int i = 0; i < vertexes; i++){
-        delete[] matrix[i];
+    if (matrix != NULL){
+        for (int i = 0; i < vertexes; i++){
+            if (matrix[i] != NULL) delete[] matrix[i];
+        }
+        delete[] matrix;
     }
-    delete[] matrix;
 }
 
 void GraphMatrix::loadFromFile(std::string filename) {
@@ -38,6 +41,7 @@ void GraphMatrix::loadFromFile(std::string filename) {
     fin.open(filename.c_str());
     fin >> edges;
     fin >> vertexes;
+    this->countDensity();
 
     this->createMatrix(vertexes);
 
@@ -48,10 +52,11 @@ void GraphMatrix::loadFromFile(std::string filename) {
         fin >> startVertex;
         fin >> endVertex;
         fin >> length;
-        matrix[startVertex][endVertex] = length;
+        if (matrix[startVertex][endVertex] == 0)
+            matrix[startVertex][endVertex] = length;
     }
 
-
+    this->countEdges();
 }
 
 void GraphMatrix::print(std::ostream &str) const {
@@ -75,6 +80,14 @@ void GraphMatrix::print(std::ostream &str) const {
 }
 
 void GraphMatrix::createMatrix(int v) {
+    if (matrix != NULL) {
+        for (int i = 0; i < vertexes; i++){
+            if (matrix[i] != NULL) delete[] matrix[i];
+        }
+        delete[] matrix;
+    }
+
+    this->vertexes = v;
     matrix = new int *[v];
     for (int i = 0; i < v; i++){
         matrix[i] = new int[v];
@@ -87,12 +100,133 @@ void GraphMatrix::createMatrix(int v) {
 }
 
 void GraphMatrix::countEdges() {
+    edges = 0;
     for (int i = 0; i < vertexes; i++){
-        for (int j = 0; j < i; j++){
-            if (matrix[i][j] != 0 || matrix[j][i] != 0)
+        for (int j = 0; j < vertexes; j++){
+            if (matrix[i][j] != 0)
                 edges++;
         }
     }
 }
+
+void GraphMatrix::createRandom(int vertexes, int density) {
+    createMatrix(vertexes);
+    this->vertexes = vertexes;
+    this->density = density;
+    this->edges = ((vertexes*vertexes - vertexes) * density)/100;
+
+    int startVertex;
+    int endVertex;
+    int length;
+   // bool twoWay;
+    bool again;
+    for (int i = 0; i < edges; i++){
+        do {
+            again = true;
+            startVertex = rand()%vertexes;
+            endVertex = rand()%vertexes;
+            length = rand()%10+1;
+            //twoWay = rand()%2;
+            if (startVertex != endVertex){
+                if (matrix[startVertex][endVertex] == 0){
+                    matrix[startVertex][endVertex] = length;
+                    again = false;
+                }
+
+                /*if(twoWay)
+                    matrix[endVertex][startVertex] = rand()%10+1;
+                */
+            }
+
+        }while (again);
+    }
+}
+
+int GraphMatrix::countDifferentEdges() {
+    int sum = 0;
+    for (int i = 0; i < vertexes; i++){
+        for (int j = 0; j < i; j++){
+            if (matrix[i][j] != 0 || matrix[j][i] !=0)
+                sum++;
+        }
+    }
+    return sum;
+}
+
+int **GraphMatrix::toSortedArray() {
+    int **result = new int*[edges];
+    for (int i = 0; i < edges; i++){
+        result[i] = new int[3]; // 0 - od, 1 - do, 2 - dlugosc
+    }
+
+    int index = 0;
+    for (int i = 0; i < vertexes; i++){
+        for (int j = 0; j < vertexes; j++){
+            if (matrix[i][j] > 0){
+                result[index][0] = i;
+                result[index][1] = j;
+                result[index][2] = matrix[i][j];
+                index++;
+            }
+        }
+    }
+
+    //sortowanie babelkowe
+    for (int i = 0; i < index; i++){
+        for (int j = 0; j < index-1; j++){
+            if (result[i][2] < result[j][2]){
+                for (int w = 0; w <3; w++){
+                    int tmp = result[i][w];
+                    result[i][w] = result[j][w];
+                    result[j][w] = tmp;
+                }
+
+            }
+        }
+    }
+
+    return result;
+}
+
+Array2 * GraphMatrix::getNeighbours(int index) {
+    Array2 *result = new Array2[3]; //1 -sasiad, 2 - dlugosc, 0-obecny wierzcholek
+
+    for (int i = 0; i < this->getNumberOfVertexes(); i++){
+            if (matrix[index][i] != 0 && result[1].findElement(i) == -1){
+                result[0].addElement(index,0);
+                result[1].addElement(i,0);
+                result[2].addElement(matrix[index][i],0);
+            }
+    }
+
+    return result;
+}
+
+void GraphMatrix::makeBothWays() {
+    for (int i = 0; i < this->vertexes; i++){
+        for (int j = 0; j < this->vertexes; j++){
+            if (this->matrix[i][j] != 0){
+                this->matrix[j][i] = this->matrix[i][j];
+            }
+        }
+    }
+    this->countEdges();
+}
+
+Array2 * GraphMatrix::toArray() {
+    Array2 *l = new Array2[3];
+
+    for (int i = 0; i < vertexes; i++){
+        for (int j = 0; j < vertexes; j++){
+            if (matrix[i][j] > 0){
+                l[0].addElement(i,0);
+                l[1].addElement(j,0);
+                l[2].addElement(matrix[i][j],0);
+            }
+        }
+    }
+    return l;
+}
+
 
 

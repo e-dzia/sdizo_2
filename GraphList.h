@@ -7,14 +7,31 @@
 
 
 #include "Graph.h"
+#include "List2.h"
+
 
 class GraphList: public Graph {
 private:
-
+    List2 *list;
+    void countEdges() override;
+    void createList(int size);
+    int countDifferentEdges() override;
 public:
-    void loadFromFile(std::string filename) override;
+    GraphList();
+    ~GraphList();
 
+    void loadFromFile(std::string filename) override;
     void print(std::ostream &str) const override;
+
+    void createRandom(int vertexes, int density) override;
+
+    int** toSortedArray() override;
+
+    Array2 * getNeighbours(int index) override;
+
+    void makeBothWays() override;
+
+    Array2 *toArray() override;
 };
 
 
