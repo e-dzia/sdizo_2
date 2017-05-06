@@ -125,7 +125,7 @@ Array2 * GraphList::getNeighbours(int index) {
     Array2 *result = new Array2[3]; //1 -sasiad, 2 - dlugosc, 0-obecny wierzcholek
 
     while (elemList != NULL){
-        if (result[1].findElement(elemList->neighbour) == -1){
+        if (result[1].findElement(elemList->neighbour) == -1 && elemList->length != 0){
             result[0].addElement(index,0);
             result[1].addElement(elemList->neighbour,0);
             result[2].addElement(elemList->length,0);
@@ -173,12 +173,14 @@ void GraphList::setEdge(int start, int end, int length) {
     if (list[start].findElement(end) == -1){
         list[start].addElement(end,length);
     }
-    else list[start].getPointerElement(end)->length = length;
+    else list[start].getPointerElement(list[start].findElement(end))->length = length;
 }
 
 int GraphList::getEdgeLength(int start, int end) {
-    if (list[start].findElement(end) != -1)
-        return list[start].getPointerElement(end)->length;
+    if (list[start].findElement(end) != -1){
+        //cout << "^^^^^^^^^^^^^^^^^ " << list[start].getPointerElement(list[start].findElement(end))->length << endl;
+        return list[start].getPointerElement(list[start].findElement(end))->length;
+    }
     else
         return 0;
 }

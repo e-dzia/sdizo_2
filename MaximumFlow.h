@@ -17,6 +17,9 @@ public:
     void menu(Graph *gl, Graph *gm) override;
 
     bool dfs(int start, int end, int* path);
+    void dfs_recursive(int i, int *path, bool* visited);
+
+    bool bfs(int start, int end, int* path);
 
 };
 

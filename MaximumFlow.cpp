@@ -24,58 +24,78 @@ string MaximumFlow::algorithm1(int start, int end) { //w głąb
      */
 
     int flow = 0;
-    bool visited[g->getNumberOfVertexes()] = {0};
     int path[g->getNumberOfVertexes()];
-
-    Array2 *arrayOfEdges = nullptr;
 
     for (int i = 0; i < g->getNumberOfVertexes();i++){
         path[i] = -1;
     }
 
     while(dfs(start,end,path)){
-        for (int i = 0; i < g->getNumberOfVertexes(); i++){
-            cout << "&&& " << i << " " << path[i] << endl;
-        }
         int j = end;
-        while (j != -1){
-            cout << j << " ";
-            j = path[j];
-        }
-        cout << endl;
         j = end;
-        while (j != -1){
-
+        int min = g->getEdgeLength(path[j],j);
+        while (path[j] != -1){
+            if (g->getEdgeLength(path[j],j) < min){
+                min = g->getEdgeLength(path[j],j);
+            }
             j = path[j];
         }
+        j = end;
+        while (path[j] != -1){
+            g->setEdge(path[j],j,g->getEdgeLength(path[j],j)-min);
+            g->setEdge(j,path[j],g->getEdgeLength(path[j],j)+min);
+            j = path[j];
+        }
+        flow += min;
 
         for (int i = 0; i < g->getNumberOfVertexes();i++){
             path[i] = -1;
         }
     }
 
-/*    for (int i = 0; i < g->getNumberOfVertexes();i++){
-        if (dfs(start,end,path)){
-
-        }
-
-        if (arrayOfEdges != nullptr)
-            delete[] arrayOfEdges;
-    }*/
-
-
     stringstream ss;
-    /*for (int i = 0; i < j; i++){
-        ss << MST[i][0] << " " << MST[i][1] << " " << MST[i][2] << endl;
-    }*/
-    //ss << "Suma wag: " << sum << endl;
+    ss << "Maksymalny przeplyw: " << flow << endl;
     string result = ss.str();
 
     return result;
 }
 
 string MaximumFlow::algorithm2(int start, int end) { //wszerz
-    return " ";
+
+    int flow = 0;
+    int path[g->getNumberOfVertexes()];
+
+    for (int i = 0; i < g->getNumberOfVertexes();i++){
+        path[i] = -1;
+    }
+
+    while(bfs(start,end,path)){
+        int j = end;
+        int min = g->getEdgeLength(path[j],j);
+        while (path[j] != -1){
+            if (g->getEdgeLength(path[j],j) < min){
+                min = g->getEdgeLength(path[j],j);
+            }
+            j = path[j];
+        }
+        j = end;
+        while (path[j] != -1){
+            g->setEdge(path[j],j,g->getEdgeLength(path[j],j)-min);
+            g->setEdge(j,path[j],g->getEdgeLength(path[j],j)+min);
+            j = path[j];
+        }
+        flow += min;
+
+        for (int i = 0; i < g->getNumberOfVertexes();i++){
+            path[i] = -1;
+        }
+    }
+
+    stringstream ss;
+    ss << "Maksymalny przeplyw: " << flow << endl;
+    string result = ss.str();
+
+    return result;
 }
 
 void MaximumFlow::menu(Graph *gl, Graph *gm) {
@@ -171,7 +191,7 @@ void MaximumFlow::menu(Graph *gl, Graph *gm) {
     this->menu(gl, gm);
 }
 
-bool MaximumFlow::dfs(int start, int end, int* path) {
+bool MaximumFlow::bfs(int start, int end, int* path) {
     /*
      *  	Zaznaczamy bieżący wierzchołek jako odwiedzony. Przechodzimy do kolejnych sąsiadów wierzchołka bieżącego
      *  	i wykonujemy dla nich tą samą operację (tzn. zaznaczamy je jako odwiedzone i przechodzimy do ich sąsiadów).
@@ -184,31 +204,54 @@ bool MaximumFlow::dfs(int start, int end, int* path) {
     Array2 arrayOfNeighbours;
     arrayOfNeighbours.addElement(start,0);
 
-    while (!allVisited){
-        int u = arrayOfNeighbours.getElement(arrayOfNeighbours.getSize()-1); //wez pierwszego sasiada
-        arrayOfNeighbours.deleteElement(arrayOfNeighbours.getSize()-1);
+    int u = arrayOfNeighbours.getElement(arrayOfNeighbours.getSize()-1);
+    while (!allVisited && u != -1){
+        u = arrayOfNeighbours.getElement(arrayOfNeighbours.getSize()-1); //wez pierwszego sasiada
+        if (u != -1) {
+            arrayOfNeighbours.deleteElement(arrayOfNeighbours.getSize()-1);
+            visited[u] = true;
+            Array2 * array2 = g->getNeighbours(u);
+            int size = array2[1].getSize();
+            for (int j = 0; j < size; j++){
+                if (!visited[array2[1][j]]){
+                    arrayOfNeighbours.addElement(array2[1][j],0);
+                    path[array2[1][j]] = u;
+                    visited[array2[1][j]] = true;
+                }
 
-        visited[u] = true;
-        Array2 * array2 = g->getNeighbours(u);
-        int size = array2[1].getSize();
-        for (int j = 0; j < size; j++){
-            if (!visited[array2[1][j]]){
-                arrayOfNeighbours.addElement(array2[1][j],0);
-                path[array2[1][j]] = u;
-                visited[array2[1][j]] = true;
             }
 
+            allVisited = true;
+            for (int i = 0; i < g->getNumberOfVertexes(); i++){
+                if (!visited[i])
+                    allVisited = false;
+            }
+            if (array2 != nullptr) delete array2;
         }
-
-        allVisited = true;
-        for (int i = 0; i < g->getNumberOfVertexes(); i++){
-            if (!visited[i])
-                allVisited = false;
-        }
-        if (array2 != nullptr) delete array2;
     }
+
 
     return (visited[end]);
 
-    return false;
+}
+
+bool MaximumFlow::dfs(int start, int end, int *path) {
+    bool visited[g->getNumberOfVertexes()] = {0};
+    visited[start] = true;
+
+    dfs_recursive(start,path,visited);
+
+    return (visited[end]);
+}
+
+void MaximumFlow::dfs_recursive(int index, int *path, bool* visited) {
+    visited[index] = true;
+
+    for (int i = 0; i < g->getNumberOfVertexes(); i++){
+        if (!visited[i] && g->getEdgeLength(index,i) != 0){
+            path[i] = index;
+            dfs_recursive(i,path,visited);
+        }
+    }
+
 }
