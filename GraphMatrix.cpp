@@ -201,7 +201,7 @@ Array2 * GraphMatrix::toArray() {
 
     for (int i = 0; i < vertexes; i++){
         for (int j = 0; j < vertexes; j++){
-            if (matrix[i][j] > 0){
+            if (matrix[i][j] != 0){
                 l[0].addElement(i,0);
                 l[1].addElement(j,0);
                 l[2].addElement(matrix[i][j],0);
@@ -209,6 +209,14 @@ Array2 * GraphMatrix::toArray() {
         }
     }
     return l;
+}
+
+void GraphMatrix::setEdge(int start, int end, int length) {
+    matrix[start][end] = length;
+}
+
+int GraphMatrix::getEdgeLength(int start, int end) {
+    return matrix[start][end];
 }
 
 

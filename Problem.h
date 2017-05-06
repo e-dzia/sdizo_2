@@ -20,7 +20,7 @@ public:
 
     virtual void menu(Graph *gl, Graph *gm)= 0;
 
-    void test();
+    void test(int start, int end);
 
     double testTime(bool matrix, bool algorithm2, int start, int end);
 

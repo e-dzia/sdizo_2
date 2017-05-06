@@ -32,6 +32,8 @@ public:
     virtual Array2 * toArray() = 0;
     virtual Array2 * getNeighbours(int index) = 0;
     virtual void makeBothWays() = 0;
+    virtual void setEdge(int start, int end, int length) = 0;
+    virtual int getEdgeLength(int start, int end) = 0;
 
     friend std::ostream& operator<<(std::ostream& str, Graph const& g){
         g.print(str);

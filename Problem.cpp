@@ -7,18 +7,18 @@
 #include "GraphMatrix.h"
 #include "GraphList.h"
 
-void Problem::test() {
+void Problem::test(int start, int end) {
     g = new GraphMatrix();
     g->loadFromFile("data.txt");
     //std::cout << *g << endl;
     std::cout << "Reprezentacja macierzowa.\n";
     std::cout << "#############################\nAlgorytm1:\n";
-    std::cout << this->algorithm1(0, 6);
+    std::cout << this->algorithm1(start, end);
 
     g->loadFromFile("data.txt");
     //std::cout << *g << endl;
     std::cout << "\n#############################\nAlgorytm2:\n";
-    std::cout << this->algorithm2(0, 6);
+    std::cout << this->algorithm2(start, end);
     delete g;
     g = NULL;
 
@@ -27,12 +27,12 @@ void Problem::test() {
     //std::cout << *g << endl;
     std::cout << "\n#############################\nReprezentacja listowa.\n";
     std::cout << "Algorytm1:\n";
-    std::cout << this->algorithm1(0, 6);
+    std::cout << this->algorithm1(start, end);
 
     g->loadFromFile("data.txt");
     //std::cout << *g << endl;
     std::cout << "\n#############################\nAlgorytm2:\n";
-    std::cout << this->algorithm2(0, 6);
+    std::cout << this->algorithm2(start, end);
     delete g;
     g = NULL;
 

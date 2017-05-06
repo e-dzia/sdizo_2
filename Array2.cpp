@@ -57,6 +57,7 @@ void Array2::addElement(int value, int position) {
 
 void Array2::deleteElement(int position) {
     if (position > this->getSize()-1) return;
+    if (size == 0) return;
     int * newArray = new int [this->getSize() -1]; //tworzy nowa tabele mniejsza o 1 od obecnej
     this->size--;
     if (position == 0){ //poczatek tabeli
@@ -180,7 +181,7 @@ void Array2::menu() {
 }
 
 int Array2::getElement(int position) {
-    if (position < this->size)
+    if (position < this->size && position >= 0)
         return array[position];
     else return -1;
 }

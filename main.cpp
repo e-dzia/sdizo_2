@@ -5,6 +5,7 @@
 #include "GraphList.h"
 #include "MinimumSpanningTree.h"
 #include "ShortestPath.h"
+#include "MaximumFlow.h"
 
 void mainManu(Problem *p);
 bool createFile(int numberOfVertexes, int numberofEdges);
@@ -12,12 +13,14 @@ void test();
 
 int main() {
     srand(time(NULL));
-    int n = 10;
-    int density = 25;
-    createFile(n,density);
+    //int n = 100;
+    //int density = 50;
+    //createFile(n,density);
 
     Problem *p = NULL;
-    mainManu(p);
+    p = new MaximumFlow();
+    p->test(0, 6);
+    //mainManu(p);
 
     if (p!=NULL) delete p;
     return 0;

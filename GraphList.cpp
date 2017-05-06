@@ -168,3 +168,17 @@ Array2 *GraphList::toArray() {
     }
     return l;
 }
+
+void GraphList::setEdge(int start, int end, int length) {
+    if (list[start].findElement(end) == -1){
+        list[start].addElement(end,length);
+    }
+    else list[start].getPointerElement(end)->length = length;
+}
+
+int GraphList::getEdgeLength(int start, int end) {
+    if (list[start].findElement(end) != -1)
+        return list[start].getPointerElement(end)->length;
+    else
+        return 0;
+}

@@ -32,6 +32,10 @@ public:
     void makeBothWays() override;
 
     Array2 *toArray() override;
+
+    void setEdge(int start, int end, int length) override;
+
+    int getEdgeLength(int start, int end) override;
 };
 
 
