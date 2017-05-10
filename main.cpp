@@ -13,21 +13,22 @@ void test();
 
 int main() {
     srand(time(NULL));
-    //int n = 100;
-    //int density = 50;
-    //createFile(n,density);
+    int n = 100;
+    int density = 50;
+    createFile(n,density);
 
     Problem *p = NULL;
-    p = new MaximumFlow();
-    p->test(0, 6);
-    //mainManu(p);
+    //p = new MaximumFlow();
+    //p->test(0, 6);
+    mainManu(p);
+    //test();
 
     if (p!=NULL) delete p;
     return 0;
 }
 
 void test(){
-    Problem *p = new ShortestPath();
+    Problem *p = new MaximumFlow();
     std::ofstream fout;
     fout.open("results.txt");
     int size[] = {50,100,150,200,250};
@@ -56,9 +57,9 @@ void test(){
 
 void mainManu(Problem *p) {
     std::cout << "MENU\n"
-            "1. Minimalne Drzewo Rozpinajace.\n"
+            "1. Minimalne drzewo rozpinajace.\n"
             "2. Najkrotsza sciezka w grafie.\n"
-            "3. Maksymalny przeplyw. (nie ma)\n"
+            "3. Maksymalny przeplyw.\n"
             "4. Wyjdz z programu.\n"
             "Prosze wpisac odpowiednia liczbe.";
     int chosen;
@@ -78,9 +79,12 @@ void mainManu(Problem *p) {
             p->menu(gl, gm);
         }
             break;
-        case 3:
-            //p = new MaximumFlow();
-           // p->menu();
+        case 3:{
+            Graph *gl = new GraphList();
+            Graph *gm = new GraphMatrix();
+            p = new MaximumFlow();
+            p->menu(gl, gm);
+        }
             break;
         case 4:
             if (p!=NULL) delete p;

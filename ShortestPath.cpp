@@ -180,7 +180,7 @@ std::string ShortestPath::algorithm2(int start, int end) { //Ford-Bellman
 void ShortestPath::menu(Graph *gl, Graph *gm) {
     std::chrono::nanoseconds time_start;
     std::chrono::nanoseconds time_end;
-    std::cout << "MENU - Minimalne Drzewo Rozpinajace\n"
+    std::cout << "MENU - Najkrotsza droga\n"
             "1. Wczytaj z pliku.\n"
             "2. Generuj losowo.\n"
             "3. Wyswietl.\n"

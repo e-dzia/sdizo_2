@@ -5,6 +5,8 @@
 #include <sstream>
 #include <chrono>
 #include "MaximumFlow.h"
+#include "GraphList.h"
+#include "GraphMatrix.h"
 
 string MaximumFlow::algorithm1(int start, int end) { //w głąb
 
@@ -32,7 +34,6 @@ string MaximumFlow::algorithm1(int start, int end) { //w głąb
 
     while(dfs(start,end,path)){
         int j = end;
-        j = end;
         int min = g->getEdgeLength(path[j],j);
         while (path[j] != -1){
             if (g->getEdgeLength(path[j],j) < min){
@@ -101,12 +102,12 @@ string MaximumFlow::algorithm2(int start, int end) { //wszerz
 void MaximumFlow::menu(Graph *gl, Graph *gm) {
     std::chrono::nanoseconds time_start;
     std::chrono::nanoseconds time_end;
-    std::cout << "MENU - Minimalne Drzewo Rozpinajace\n"
+    std::cout << "MENU - Maksymalny przeplyw\n"
             "1. Wczytaj z pliku.\n"
             "2. Generuj losowo.\n"
             "3. Wyswietl.\n"
-            "4. Algorytm Dijkstry.\n"
-            "5. Algorytm Forda-Bellmana.\n"
+            "4. Algorytm Forda-Fulkersona - wyszukianie w glab.\n"
+            "5. Algorytm Forda-Fulkersona - wyszukiwanie wszerz.\n"
             "6. Wyjdz do glownego menu.\n"
             "Prosze wpisac odpowiednia liczbe.\n";
     int chosen;
@@ -192,12 +193,6 @@ void MaximumFlow::menu(Graph *gl, Graph *gm) {
 }
 
 bool MaximumFlow::bfs(int start, int end, int* path) {
-    /*
-     *  	Zaznaczamy bieżący wierzchołek jako odwiedzony. Przechodzimy do kolejnych sąsiadów wierzchołka bieżącego
-     *  	i wykonujemy dla nich tą samą operację (tzn. zaznaczamy je jako odwiedzone i przechodzimy do ich sąsiadów).
-     *  	Przechodzenie kończymy, gdy zostaną w ten sposób odwiedzone wszystkie dostępne wierzchołki.
-     */
-
     bool visited[g->getNumberOfVertexes()] = {0};
     visited[start] = true;
     bool allVisited = false;
